@@ -50,5 +50,5 @@ def delete_notebook(notebook_id):
     if notebook:
         db.session.delete(notebook)
         db.session.commit()
-        return jsonify({'message': f'Notebook with id of {notebook_id} deleted successfuly.'}), 200
+        return jsonify({'message': f'Notebook with id of {notebook_id} deleted successfully.'}), 200
     return jsonify({'error': f'Notebook with id of {notebook_id} not found for user {current_user.username}.'}), 404
