@@ -16,8 +16,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    user = db.relationship('Notebook', back_populates='user')
-    user = db.relationship('Note', back_populates='user')
+    notebooks = db.relationship('Notebook', back_populates='user')
+    notes = db.relationship('Note', back_populates='user')
     user_note = db.relationship('User_Note', back_populates='user')
 
     @property

@@ -17,8 +17,9 @@ class Note(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    user = db.relationship('User', back_populates='user')
-    notebook = db.relationship('Notebook', back_populates='note', lazy='joined')
+    user = db.relationship('User', back_populates='notes')
+    notebook = db.relationship('Notebook', back_populates='notes', lazy='joined')
+    user_note = db.relationship('User_Note', back_populates='note')
 
     def to_dict(self):
         return {
