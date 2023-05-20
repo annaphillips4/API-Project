@@ -16,18 +16,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    lists = db.relationship("List", back_populates="owner")
-    list_users = db.relationship('List_User', back_populates='user')
-    owned_tasks = db.relationship(
-        'Task', back_populates='owner',
-        foreign_keys='Task.owner_id'
-        )
-    assigned_tasks = db.relationship(
-        'Task', back_populates='assigned_user',
-        foreign_keys='Task.assigned_user_id'
-        )
-
-
+    user = db.relationship('Notebook', back_populates='user')
+    user = db.relationship('Note', back_populates='user')
+    user_note = db.relationship('User_Note', back_populates='user')
 
     @property
     def password(self):
