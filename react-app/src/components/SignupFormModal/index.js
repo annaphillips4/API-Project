@@ -13,7 +13,7 @@ function SignupFormModal() {
 	const [errors, setErrors] = useState([]);
 	const { closeModal } = useModal();
 
-	const handleSubmit = async (e) => {
+	const handleSignup = async (e) => {
 		e.preventDefault();
 		if (password === confirmPassword) {
 			const data = await dispatch(signUp(username, email, password));
@@ -32,7 +32,7 @@ function SignupFormModal() {
 	return (
 		<>
 			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSignup}>
 				<ul>
 					{errors.map((error, idx) => (
 						<li key={idx}>{error}</li>
