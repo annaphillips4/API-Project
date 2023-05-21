@@ -12,6 +12,7 @@ function Notebooks() {
     }, [dispatch]);
 
     return (<>
+        <h3>Notebooks</h3>
         {notebooksArr.map((notebookObj) => {
             return <div key={notebookObj.id}>{notebookObj.name}</div>
         })}

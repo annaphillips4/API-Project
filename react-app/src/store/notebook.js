@@ -76,7 +76,7 @@ export const deleteNotebook = (notebook) => async (dispatch) => {
 
 const initialState = {}
 // Reducer
-const notebooksReducer = (state=initialState, action) => {
+const notebooks = (state=initialState, action) => {
     let newState = {};
     switch(action.type){
         case LOAD_NOTEBOOKS:
@@ -88,11 +88,11 @@ const notebooksReducer = (state=initialState, action) => {
             return { ...state, [action.notebook.id]: { ...action.notebook }}
         case REMOVE_NOTEBOOK:
             newState = { ...state }
-            delete newState[action.notebookId]
+            delete newState[action.notebook.id]
             return newState
         default:
             return state;
     };
 };
 
-export default notebooksReducer;
+export default notebooks;
