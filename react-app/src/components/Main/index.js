@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from "react-redux";
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
+import { Redirect, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import Notebooks from '../Notebooks'
 import Notes from '../Notes'
 import UserBar from '../UserBar'
@@ -11,6 +11,7 @@ function Main() {
 
     const sessionUser = useSelector((state) => state.session.user);
     const editorRef = useRef(null);
+    const location = useLocation()
     useEffect(() => {
         const editor = document.createElement('div');
         editorRef.current.appendChild(editor);
@@ -29,8 +30,8 @@ function Main() {
             editorRef.current.removeChild(editor);
         };
     }, []);
-    if (!sessionUser) return <Redirect to="/" />;
 
+    if (!sessionUser) return <Redirect to="/" />;
 
     return (
         <div>
@@ -40,7 +41,7 @@ function Main() {
                 <Notes />
 
                 <div className="note-container">
-                    <div ref={editorRef} />
+                    <div ref={editorRef}></div>
                 </div>
             </div>
         </div>
