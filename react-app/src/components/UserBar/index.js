@@ -12,7 +12,7 @@ function UserBar() {
     };
 
     return (
-        <div>
+        <div class='userbar'>
             Hello, {sessionUser.firstName} {sessionUser.lastName}! <button onClick={handleLogout}>Log Out</button>
         </div>
     )
