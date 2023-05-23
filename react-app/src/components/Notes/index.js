@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotes, postNote } from "../../store/note";
-import { Link, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function Notes() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const location = useLocation();
     const notes = useSelector((state) => state.notes);
     const currentUser = useSelector(state => state.session.user)
     const notesArr = Object.values(notes);
     const [showInput, setShowInput] = useState(false);
     const [name, setName] = useState("New Note");
-    const [errors, setErrors] = useState([]);
 
     const notebookId = location.pathname.split("/")[3];
 
@@ -36,16 +36,11 @@ function Notes() {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const note = { name, user_id: currentUser.id, notebook_id: parseInt(notebookId) }
+        let newNote = await dispatch(postNote(note))
 
-        console.log(note)
-        try {
-            await dispatch(postNote(note))
-        } catch (res) {
-            const data = await res.json();
-            if (data && data.errors) setErrors(data.errors);
-        }
         setName("");
         setShowInput(false);
+        history.push(`/app/notebook/${newNote.notebookId}/note/${newNote.id}`)
     };
 
     return (
