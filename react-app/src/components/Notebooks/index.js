@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteNotebook, getNotebooks, postNotebook } from "../../store/notebook";
+import { deleteNotebook, getNotebooks, postNotebook, putNotebook } from "../../store/notebook";
 import { Link, useHistory } from "react-router-dom";
 
 function Notebooks() {
@@ -86,8 +86,17 @@ function Notebooks() {
         toggleContextMenu()
     }
 
-    const handleRename = async () => {
-        console.log(`would rename notebook# ${selectedNotebook} as ${newName}`)
+    const handleRename = async (e) => {
+        e.preventDefault()
+        if (newName === '') {
+            return 'Notebook name cannot be left blank'
+        } else {
+            console.log(`would rename notebook# ${selectedNotebook} as ${newName}`)
+            const notebook = { id: selectedNotebook, name: newName }
+            await dispatch(putNotebook(notebook))
+            setRenamingNotebook(false);
+            setNewName('')
+        }
     }
 
     return (
@@ -110,6 +119,7 @@ function Notebooks() {
                                 value={newName}
                                 onChange={(e) => setNewName(e.target.value)}
                                 onBlur={() => setRenamingNotebook(false)}
+                                autoFocus
                             />
                         </form>
                     ) : (
@@ -124,6 +134,7 @@ function Notebooks() {
                         value={name}
                         onChange={handleInputChange}
                         onBlur={handleInputBlur}
+                        autoFocus
                     />
                 </form>
             }
