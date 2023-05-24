@@ -48,7 +48,7 @@ function Notes() {
             <h3>Notes</h3>
             {notesArr.map((noteObj) => {
                 if (noteObj.notebookId === parseInt(notebookId)) {
-                    return <div key={noteObj.id}><Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`}>{noteObj.name}</Link></div>
+                    return <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`}><div key={noteObj.id}>{noteObj.name}</div></Link>
                 }
                 return null
             })}

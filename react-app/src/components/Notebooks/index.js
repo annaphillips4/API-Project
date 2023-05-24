@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotebooks, postNotebook } from "../../store/notebook";
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { deleteNotebook, getNotebooks, postNotebook } from "../../store/notebook";
+import { Link, useHistory } from "react-router-dom";
 
 function Notebooks() {
     const dispatch = useDispatch();
@@ -11,9 +11,12 @@ function Notebooks() {
     const notebooksArr = Object.values(notebooks);
     const [showInput, setShowInput] = useState(false);
     const [name, setName] = useState("New Notebook");
-    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
-    const [selectedNotebook, setSelectedNotebook] = useState(null);
-    const editorRef = useRef(null);
+    const [showContextMenu, setShowContextMenu] = useState(false)
+    const [selectedNotebook, setSelectedNotebook] = useState()
+    const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+    const [renamingNotebook, setRenamingNotebook] = useState(false);
+    const [newName, setNewName] = useState("")
+    const contextMenuRef = useRef(null);
 
     useEffect(() => {
         dispatch(getNotebooks())
@@ -43,43 +46,75 @@ function Notebooks() {
         history.push(`/app/notebook/${newNotebook.id}`)
     };
 
-    const rightClick = (e) => {
+    const handleContextMenu = (e, id) => {
         e.preventDefault();
+        if (selectedNotebook !== id || !showContextMenu) {
+            setContextMenuPosition({ x: e.clientX, y: e.clientY });
+            setShowContextMenu(true)
+        } else {
+            toggleContextMenu();
+        }
     }
 
-    const handleContextMenu = (e, notebook) => {
-        e.preventDefault();
-        setSelectedNotebook(notebook);
-        setMenuPosition({ top: e.clientY, left: e.clientX });
-    };
+    const toggleContextMenu = () => {
+        setShowContextMenu(!showContextMenu)
+    }
 
-    const handleDeleteNotebook = () => {
-        // Implement delete notebook functionality
-        console.log("Deleting notebook:", selectedNotebook);
-    };
+    useEffect(() => {
+        const handleOutsideClick = (e) => {
+            if (contextMenuRef.current && !contextMenuRef.current.contains(e.target)) {
+                setShowContextMenu(false);
+            }
+        };
 
-    const handleRenameNotebook = () => {
-        // Implement rename notebook functionality
-        console.log("Renaming notebook:", selectedNotebook);
-    };
+        document.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, []);
 
-    const handleChangeColor = () => {
-        // Implement change color functionality
-        console.log("Changing color of notebook:", selectedNotebook);
-    };
+    const handleDelete = async () => {
+        console.log(selectedNotebook)
+        await dispatch(deleteNotebook(selectedNotebook))
+        await dispatch(getNotebooks())
+        toggleContextMenu()
+    }
+
+    const startRename = (id) => {
+        setNewName(notebooks[id].name);
+        setRenamingNotebook(true);
+        toggleContextMenu()
+    }
+
+    const handleRename = async () => {
+        console.log(`would rename notebook# ${selectedNotebook} as ${newName}`)
+    }
 
     return (
-        <div class="notebooksListContainer">
+        <div className="notebooksListContainer">
             <h3>Notebooks</h3>
             {notebooksArr.map((notebookObj) => {
                 let notebookId = notebookObj.id
                 return <Link to={`/app/notebook/${notebookId}`} className='tab-links'><div
                     key={notebookObj.id}
                     className="notebook-tab"
-                    style={{ backgroundColor: notebookObj.color }}
-                    onContextMenu={(e) => handleContextMenu(e, notebookObj)}
+                    onContextMenu={(e) => {
+                        handleContextMenu(e, notebookObj.id);
+                        setSelectedNotebook(notebookObj.id);
+                    }}
                 >
-                    {notebookObj.name}
+                    {renamingNotebook && notebookObj.id === selectedNotebook ? (
+                        <form onSubmit={handleRename}>
+                            <input
+                                type="text"
+                                value={newName}
+                                onChange={(e) => setNewName(e.target.value)}
+                                onBlur={() => setRenamingNotebook(false)}
+                            />
+                        </form>
+                    ) : (
+                        <><i class="fa-solid fa-book" style={{ color: notebookObj.color }}></i> {notebookObj.name}</>
+                    )}
                 </div></Link>
             })}
             {showInput &&
@@ -95,16 +130,25 @@ function Notebooks() {
             <div className="addNB" onClick={handleAddNotebook}>
                 <i className="fa-solid fa-plus"></i>Add a Notebook
             </div>
-            {selectedNotebook && editorRef.current && (
-                <menu
+            {showContextMenu &&
+                <div
+                    ref={contextMenuRef}
                     className="context-menu"
-                    style={{ top: menuPosition.top, left: menuPosition.left }}
+                    style={{ top: contextMenuPosition.y, left: contextMenuPosition.x }}
                 >
-                    <menuitem onClick={handleDeleteNotebook}><i class="fa-solid fa-xmark-large"></i>Delete Notebook</menuitem>
-                    <menuitem onClick={handleRenameNotebook}><i class="fa-solid fa-i-cursor"></i>Rename Notebook</menuitem>
-                    <menuitem onClick={handleChangeColor}><i class="fa-solid fa-palette"></i>Change Color</menuitem>
-                </menu>
-            )}
+                    <div
+                        className="context-option"
+                        onClick={handleDelete}
+                    ><i class="fa-solid fa-xmark" /> Delete Notebook</div>
+                    <div
+                        className="context-option"
+                        onClick={() => startRename(selectedNotebook)}
+                    ><i class="fa-solid fa-i-cursor" /> Rename Notebook</div>
+                    <div
+                        className="context-option"
+                    ><i class="fa-solid fa-palette" /> Change Color</div>
+                </div>
+            }
         </div>
     );
 };

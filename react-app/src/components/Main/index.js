@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
-import Notebooks from '../Notebooks'
-import Notes from '../Notes'
-import UserBar from '../UserBar'
-import Quill from 'quill'
+import Notebooks from '../Notebooks';
+import Notes from '../Notes';
+import UserBar from '../UserBar';
+import Quill from 'quill';
 import { useRef } from 'react';
 
 function Main() {
-
     const sessionUser = useSelector((state) => state.session.user);
     const editorRef = useRef(null);
-    const location = useLocation()
+    const location = useLocation();
+
     useEffect(() => {
         const editor = document.createElement('div');
         editorRef.current.appendChild(editor);
@@ -27,25 +27,26 @@ function Main() {
         });
 
         return () => {
-            editorRef.current.removeChild(editor);
+            if (editorRef.current && editorRef.current.contains(editor)) {
+                editorRef.current.removeChild(editor);
+            }
         };
     }, []);
 
     if (!sessionUser) return <Redirect to="/" />;
 
     return (
-        <div>
+        <div className="app-container">
             <UserBar />
-            <div className='app-container'>
-                <Notebooks />
-                <Notes />
+            <Notebooks />
+            <Notes />
 
-                <div className="note-container">
-                    <div ref={editorRef}></div>
-                </div>
+            <div className="note-container">
+                <div ref={editorRef}></div>
             </div>
         </div>
-    )
+
+    );
 }
 
 export default Main;

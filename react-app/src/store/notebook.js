@@ -63,14 +63,14 @@ export const putNotebook = (notebook) => async (dispatch) => {
     };
 };
 export const deleteNotebook = (notebook) => async (dispatch) => {
-    const res = await fetch(`/api/notebooks/${notebook.id}`, {
+    const res = await fetch(`/api/notebooks/${notebook}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
         }
     });
     const deleteMessage = await res.json();
-    dispatch(remove(notebook.id));
+    dispatch(remove(notebook));
     return deleteMessage;
 }
 
@@ -88,7 +88,7 @@ const notebooks = (state=initialState, action) => {
             return { ...state, [action.notebook.id]: { ...action.notebook }}
         case REMOVE_NOTEBOOK:
             newState = { ...state }
-            delete newState[action.notebook.id]
+            delete newState[action.notebook]
             return newState
         default:
             return state;
