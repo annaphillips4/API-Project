@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotes, postNote } from "../../store/note";
-import { Link, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, Switch, Route, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function Notes() {
     const dispatch = useDispatch();
@@ -25,6 +25,8 @@ function Notes() {
 
     const handleInputBlur = () => {
         if (name.trim() === "") {
+            return "Note name cannot be blank"
+        } else if (name.trim()) {
             setShowInput(false);
         }
     };
@@ -46,25 +48,33 @@ function Notes() {
     return (
         <div class="notesListContainer">
             <h3>Notes</h3>
-            {notesArr.map((noteObj) => {
-                if (noteObj.notebookId === parseInt(notebookId)) {
-                    return <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`}><div key={noteObj.id}>{noteObj.name}</div></Link>
-                }
-                return null
-            })}
-            {showInput &&
-                <form onSubmit={handleFormSubmit}>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={handleInputChange}
-                        onBlur={handleInputBlur}
-                    />
-                </form>
-            }
-            <div className="addNB" onClick={handleAddNote}>
-                <i className="fa-solid fa-plus"></i>Add a New Note
-            </div>
+            <Switch>
+                <Route exact path='/app'>
+                    <div>Select a notebook to view its notes.</div>
+                </Route>
+                <Route path='/app/notebook/:notebookId'>
+                    {notesArr.map((noteObj) => {
+                        if (noteObj.notebookId === parseInt(notebookId)) {
+                            return <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`}><div key={noteObj.id}>{noteObj.name}</div></Link>
+                        }
+                        return null
+                    })}
+                    {showInput &&
+                        <form onSubmit={handleFormSubmit}>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={handleInputChange}
+                                onBlur={handleInputBlur}
+                                autofocus
+                            />
+                        </form>
+                    }
+                    <div className="addNB" onClick={handleAddNote}>
+                        <i className="fa-solid fa-plus"></i>Add a New Note
+                    </div>
+                </Route>
+            </Switch>
         </div>
     );
 };

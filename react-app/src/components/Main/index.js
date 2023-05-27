@@ -1,37 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import { Switch, Route, Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import Notebooks from '../Notebooks';
 import Notes from '../Notes';
 import UserBar from '../UserBar';
-import Quill from 'quill';
-import { useRef } from 'react';
+import Editor from '../Editor'
 
 function Main() {
     const sessionUser = useSelector((state) => state.session.user);
-    const editorRef = useRef(null);
-    const location = useLocation();
-
-    useEffect(() => {
-        const editor = document.createElement('div');
-        editorRef.current.appendChild(editor);
-
-        const quill = new Quill(editor, {
-            debug: 'info',
-            modules: {
-                // toolbar: '#toolbar'
-            },
-            placeholder: 'Take notes...',
-            readOnly: false,
-            theme: 'snow'
-        });
-
-        return () => {
-            if (editorRef.current && editorRef.current.contains(editor)) {
-                editorRef.current.removeChild(editor);
-            }
-        };
-    }, []);
 
     if (!sessionUser) return <Redirect to="/" />;
 
@@ -42,7 +18,21 @@ function Main() {
             <Notes />
 
             <div className="note-container">
-                <div ref={editorRef}></div>
+                <Switch>
+                    <Route exact path='/app'>
+                        <div>
+                            Select a notebook or add a new notebook to begin.
+                        </div>
+                    </Route>
+                    <Route exact path='/app/notebook/:notebookId'>
+                        <div>
+                            Select a note or add a new note to begin.
+                        </div>
+                    </Route>
+                    <Route exact path='/app/notebook/:notebookId/note/:noteId'>
+                        <Editor />
+                    </Route>
+                </Switch>
             </div>
         </div>
 

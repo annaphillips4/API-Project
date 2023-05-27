@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteNotebook, getNotebooks, postNotebook, putNotebook } from "../../store/notebook";
 import { Link, useHistory } from "react-router-dom";
+// import { CompactPicker } from 'react-color'
 
 function Notebooks() {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function Notebooks() {
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [renamingNotebook, setRenamingNotebook] = useState(false);
     const [newName, setNewName] = useState("")
+    // const [changingColor, setChangingColor] = useState(false)
     const contextMenuRef = useRef(null);
 
     useEffect(() => {
@@ -91,13 +93,18 @@ function Notebooks() {
         if (newName === '') {
             return 'Notebook name cannot be left blank'
         } else {
-            console.log(`would rename notebook# ${selectedNotebook} as ${newName}`)
             const notebook = { id: selectedNotebook, name: newName }
             await dispatch(putNotebook(notebook))
             setRenamingNotebook(false);
             setNewName('')
         }
     }
+
+    // const handleChangeColor = () => {
+    //     setChangingColor(true);
+    //     toggleContextMenu();
+
+    // }
 
     return (
         <div className="notebooksListContainer">
@@ -125,6 +132,12 @@ function Notebooks() {
                     ) : (
                         <><i class="fa-solid fa-book" style={{ color: notebookObj.color }}></i> {notebookObj.name}</>
                     )}
+                    {/* {changingColor && notebookObj.id === selectedNotebook &&
+                        <div style={{ position: 'absolute', top: contextMenuPosition.y, left: contextMenuPosition.x }}>
+                            <CompactPicker
+                            />
+                        </div>
+                    } */}
                 </div></Link>
             })}
             {showInput &&
@@ -155,9 +168,10 @@ function Notebooks() {
                         className="context-option"
                         onClick={() => startRename(selectedNotebook)}
                     ><i class="fa-solid fa-i-cursor" /> Rename Notebook</div>
-                    <div
+                    {/* <div
                         className="context-option"
-                    ><i class="fa-solid fa-palette" /> Change Color</div>
+                        onClick={handleChangeColor}
+                    ><i class="fa-solid fa-palette" /> Change Color</div> */}
                 </div>
             }
         </div>
