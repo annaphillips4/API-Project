@@ -45,7 +45,6 @@ function Editor() {
         if (note) {
             quill.root.innerHTML = note.content; // Set initial content from the note
         }
-        console.log(editor)
 
         return () => {
             if (document.getElementById('editor-container')) {
@@ -58,7 +57,6 @@ function Editor() {
     const handleSaveNote = async (e) => {
         e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
-        console.log(noteContents)
         const newNote = { id: note.id, content: noteContents, name: note.name }
         await dispatch(putNote(newNote))
     };

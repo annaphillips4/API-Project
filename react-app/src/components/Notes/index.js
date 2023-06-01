@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotes, postNote } from "../../store/note";
-import { Link, Switch, Route, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, Switch, Route, useHistory, useLocation, Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function Notes() {
     const dispatch = useDispatch();
@@ -64,9 +64,9 @@ function Notes() {
                         if (noteObj.notebookId === parseInt(notebookId)) {
                             const textContent = removeHTMLTags(noteObj.content);
                             return (
-                                <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`} className='tab-links'>
+                                <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`} className="tab-links">
                                     <div className="note-whole-tab">
-                                        <div key={noteObj.id} className="notebook-tab">{noteObj.name}</div>
+                                        <div className="note-name" key={noteObj.id}>{noteObj.name}</div>
                                         <div className="note-first-lines">{textContent}</div>
                                     </div>
                                 </Link>

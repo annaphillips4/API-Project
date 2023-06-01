@@ -15,7 +15,7 @@ body {
     /* height: 50px; */
     width: 100%;
     padding: 10px;
-    background-color: rgb(235,236,237);
+    background-color: rgb(235, 236, 237);
     filter: drop-shadow(-5px 0 5px rgb(163, 163, 163));
     position: sticky;
     font-weight: bold;
@@ -26,32 +26,32 @@ body {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-  }
+}
 
 .notebooksListContainer {
-    background-color: rgb(245,246,247);
+    background-color: rgb(245, 246, 247);
     max-width: 200px;
     min-width: 200px;
     flex-grow: 1;
     padding: 0 10px;
-    border-right: 1px solid rgb(235,236,237);
-    position: sticky;
-    overflow: scroll;
+    border-right: 1px solid rgb(235, 236, 237);
+    /* position: sticky;
+    overflow: scroll; */
 }
 
 .notesListContainer {
-    background-color: rgb(245,246,247);
+    background-color: rgb(245, 246, 247);
     max-width: 200px;
     min-width: 200px;
     flex-grow: 1;
     padding: 0 10px;
-    border-right: 1px solid rgb(235,236,237);
-    position: sticky;
+    border-right: 1px solid rgb(235, 236, 237);
+    /* position: sticky; */
 }
 
 .note-container {
     width: calc(100%-400px);
-    background-color: rgb(248,249,250);
+    background-color: rgb(248, 249, 250);
     flex-grow: 1;
     padding: 0 40px;
 }
@@ -66,7 +66,8 @@ body {
 .ql-editor {
     flex-grow: 1;
     overflow-y: auto;
-    height: calc(100vh - 250px); /* Adjust the value as needed */
+    height: calc(100vh - 250px);
+    /* Adjust the value as needed */
 }
 
 .notebook-tab {
@@ -76,20 +77,48 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size:small;
+    font-size: small;
+}
+
+.note-whole-tab {
+    padding: 10px 10px;
+    color: #222;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: small;
+}
+
+.note-name {
+    color: #222;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: small;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-clamp: 1;
+    /* for non-WebKit browsers */
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    max-height: 1.4em;
 }
 
 .note-first-lines {
-    padding: 10px 10px;
     color: #222;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: x-small;
     display: -webkit-box;
-    -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    max-height: 1.4em; /* Adjust this value to control the number of lines */
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    /* for non-WebKit browsers */
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    max-height: 2.8em;
 }
 
 .tab-links {
@@ -97,11 +126,11 @@ body {
 }
 
 .notebook-tab:hover {
-    background-color: rgb(235,236,237);
+    background-color: rgb(235, 236, 237);
 }
 
 .note-whole-tab:hover {
-    background-color: rgb(235,236,237);
+    background-color: rgb(235, 236, 237);
 }
 
 .add-new {
@@ -111,20 +140,30 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size:small;
-    border: 1px solid rgb(225,226,227);
+    font-size: small;
+    border: 1px solid rgb(225, 226, 227);
+}
+
+.add-input {
+    width: calc(100% - 30px);
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid rgb(225, 226, 227);
+    filter: none;
+    outline: none;
 }
 
 .add-new:hover {
-    background-color: rgb(225,226,227);
+    background-color: rgb(225, 226, 227);
 }
 
 .context-menu {
     position: absolute;
-    background: rgb(235,236,237);
-    color:#4d4d4d;
+    background: rgb(235, 236, 237);
+    color: #4d4d4d;
     font-size: small;
     filter: drop-shadow(0px 0px 4px rgb(163, 163, 163));
+    z-index: 10;
 }
 
 i {
@@ -133,16 +172,25 @@ i {
 
 .context-option:hover {
     cursor: pointer;
-    background-color: rgb(225,226,227);
+    background-color: rgb(225, 226, 227);
 }
 
 .cancel {
     color: rgb(184, 3, 3);
     font-size: smaller;
-    cursor: default;
+    display: inline-block;
+}
+.cancel:hover {
+    cursor: pointer;
 }
 
-.cancel:hover {
+.submit {
+    color: #222;
+    font-size: smaller;
+    display: inline-block;
+    margin: 0px 20px 0px 10px;
+}
+.submit:hover {
     cursor: pointer;
 }
 
@@ -154,5 +202,5 @@ i {
     font-size: small;
     font-weight: lighter;
     letter-spacing: 0.1em;
-    color:#4d4d4d
+    color: #4d4d4d
 }

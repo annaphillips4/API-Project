@@ -1,13 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import Notebooks from '../Notebooks';
 import Notes from '../Notes';
 import UserBar from '../UserBar';
 import Editor from '../Editor'
+import { getNotes } from '../../store/note';
 
 function Main() {
+    const dispatch = useDispatch()
     const sessionUser = useSelector((state) => state.session.user);
+
+    useEffect(() => {
+        dispatch(getNotes())
+    }, [dispatch]);
 
     if (!sessionUser) return <Redirect to="/" />;
 

@@ -79,7 +79,6 @@ function Notebooks() {
     }, []);
 
     const handleDelete = async () => {
-        console.log(selectedNotebook)
         await dispatch(deleteNotebook(selectedNotebook))
         await dispatch(getNotebooks())
         toggleContextMenu()
@@ -125,6 +124,7 @@ function Notebooks() {
                     {renamingNotebook && notebookObj.id === selectedNotebook ? (
                         <form onSubmit={handleRename}>
                             <input
+                                className="add-input"
                                 type="text"
                                 value={newName}
                                 onChange={(e) => setNewName(e.target.value)}
@@ -143,21 +143,25 @@ function Notebooks() {
                     } */}
                 </div></Link>
             })}
-            {showInput &&
+            {showInput ? (
                 <form onSubmit={handleFormSubmit}>
                     <input
+                        className="add-input"
                         type="text"
                         value={name}
                         onChange={handleInputChange}
                         onBlur={handleInputBlur}
                         autoFocus
                     />
-                    <div className='cancel' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-xmark"></i> Cancel</div>
+                    <div className='submit' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-check"></i> Submit</div>
+                    <div className='cancel' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
                 </form>
+            ) : (
+                <div className="add-new" onClick={handleAddNotebook}>
+                    <i className="fa-solid fa-plus"></i>Add a Notebook
+                </div>
+            )
             }
-            <div className="add-new" onClick={handleAddNotebook}>
-                <i className="fa-solid fa-plus"></i>Add a Notebook
-            </div>
             {showContextMenu &&
                 <div
                     ref={contextMenuRef}
@@ -168,7 +172,7 @@ function Notebooks() {
                         <tbody>
                             <div className="context-option" onClick={handleDelete}>
                                 <tr>
-                                    <td><i className="fa-solid fa-xmark" /></td>
+                                    <td><i class="fa-solid fa-x" /></td>
                                     <td>Delete Notebook</td>
                                 </tr>
                             </div>
