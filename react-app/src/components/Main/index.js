@@ -14,28 +14,29 @@ function Main() {
     return (
         <div className="app-container">
             <UserBar />
-            <Notebooks />
-            <Notes />
+            <div className="main-container">
+                <Notebooks />
+                <Notes />
 
-            <div className="note-container">
-                <Switch>
-                    <Route exact path='/app'>
-                        <div>
-                            Select a notebook or add a new notebook to begin.
-                        </div>
-                    </Route>
-                    <Route exact path='/app/notebook/:notebookId'>
-                        <div>
-                            Select a note or add a new note to begin.
-                        </div>
-                    </Route>
-                    <Route exact path='/app/notebook/:notebookId/note/:noteId'>
-                        <Editor />
-                    </Route>
-                </Switch>
+                <div className="note-container">
+                    <Switch>
+                        <Route exact path='/app'>
+                            <div>
+                                Select a notebook or add a new notebook to begin.
+                            </div>
+                        </Route>
+                        <Route exact path='/app/notebook/:notebookId'>
+                            <div>
+                                Select a note or add a new note to begin.
+                            </div>
+                        </Route>
+                        <Route exact path='/app/notebook/:notebookId/note/:noteId'>
+                            <Editor />
+                        </Route>
+                    </Switch>
+                </div>
             </div>
         </div>
-
     );
 }
 

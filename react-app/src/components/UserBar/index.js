@@ -13,7 +13,14 @@ function UserBar() {
 
     return (
         <div class='userbar'>
-            Hello, {sessionUser.firstName} {sessionUser.lastName}! <button onClick={handleLogout}>Log Out</button>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            {sessionUser.firstName} {sessionUser.lastName} | 
+            <i class="fa-solid fa-book" />
+            <i class="fa-regular fa-clock"></i>
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-toggle-off"></i>
+            <i class="fa-solid fa-toggle-on"></i>
+            <i class="fa-solid fa-angles-left"></i>
         </div>
     )
 }

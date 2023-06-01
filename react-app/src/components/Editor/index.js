@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { putNote } from '../../store/note';
 import Quill from 'quill';
 
 function Editor() {
     const { noteId } = useParams();
     const note = useSelector((state) => state.notes[noteId]);
+    const dispatch = useDispatch()
     const [editorContent, setEditorContent] = useState('');
 
     useEffect(() => {
@@ -31,6 +33,7 @@ function Editor() {
             },
             placeholder: 'Take notes...',
             readOnly: false,
+            scrollingContainer: '.ql-editor',
             theme: 'snow',
         });
 
@@ -52,16 +55,33 @@ function Editor() {
         };
     }, [note]);
 
-    const handleSaveNote = () => {
-        // Perform the save action with the updated editorContent
-        console.log('Saving note editorContent:', editorContent);
+    const handleSaveNote = async (e) => {
+        e.preventDefault()
+        const noteContents = document.querySelector('.ql-editor').innerHTML
+        console.log(noteContents)
+        const newNote = { id: note.id, content: noteContents, name: note.name }
+        await dispatch(putNote(newNote))
     };
 
     return (
-        <div className="note-container">
+        <>
+            <h1 className="note-title">{note.name}</h1>
+            <h2 className="note-updated">
+                {new Date(note.updatedAt).toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric"
+                })}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {new Date(note.updatedAt).toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric"
+                })}
+            </h2>
+
             <div id="editor-container"></div>
             <button onClick={handleSaveNote}>Save</button>
-        </div>
+        </>
     );
 }
 

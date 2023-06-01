@@ -23,11 +23,12 @@ function Notes() {
         setShowInput(true);
     };
 
-    const handleInputBlur = () => {
+    const handleInputBlur = (e) => {
         if (name.trim() === "") {
-            return "Note name cannot be blank"
-        } else if (name.trim()) {
+            setName("New Note")
             setShowInput(false);
+        } else {
+            handleFormSubmit(e)
         }
     };
 
@@ -40,13 +41,19 @@ function Notes() {
         const note = { name, user_id: currentUser.id, notebook_id: parseInt(notebookId) }
         let newNote = await dispatch(postNote(note))
 
-        setName("");
+        setName("New Note");
         setShowInput(false);
         history.push(`/app/notebook/${newNote.notebookId}/note/${newNote.id}`)
     };
 
+    function removeHTMLTags(content) {
+        const tempElement = document.createElement("div");
+        tempElement.innerHTML = content;
+        return tempElement.textContent || tempElement.innerText;
+    }
+
     return (
-        <div class="notesListContainer">
+        <div className="notesListContainer">
             <h3>Notes</h3>
             <Switch>
                 <Route exact path='/app'>
@@ -55,9 +62,17 @@ function Notes() {
                 <Route path='/app/notebook/:notebookId'>
                     {notesArr.map((noteObj) => {
                         if (noteObj.notebookId === parseInt(notebookId)) {
-                            return <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`}><div key={noteObj.id}>{noteObj.name}</div></Link>
+                            const textContent = removeHTMLTags(noteObj.content);
+                            return (
+                                <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`} className='tab-links'>
+                                    <div className="note-whole-tab">
+                                        <div key={noteObj.id} className="notebook-tab">{noteObj.name}</div>
+                                        <div className="note-first-lines">{textContent}</div>
+                                    </div>
+                                </Link>
+                            );
                         }
-                        return null
+                        return null;
                     })}
                     {showInput &&
                         <form onSubmit={handleFormSubmit}>
@@ -66,11 +81,12 @@ function Notes() {
                                 value={name}
                                 onChange={handleInputChange}
                                 onBlur={handleInputBlur}
-                                autofocus
+                                autoFocus
                             />
+                            <div className='cancel' onClick={() => { setName("New Note"); setShowInput(false) }}><i class="fa-solid fa-xmark"></i> Cancel</div>
                         </form>
                     }
-                    <div className="addNB" onClick={handleAddNote}>
+                    <div className="add-new" onClick={handleAddNote}>
                         <i className="fa-solid fa-plus"></i>Add a New Note
                     </div>
                 </Route>
