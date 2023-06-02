@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from datetime import datetime
+import datetime
 from app.models import Note, db
 from app.forms import NoteForm
 from .auth_routes import validation_errors_to_error_messages
@@ -39,7 +39,7 @@ def edit_note(note_id):
         note.name = form.data['name']
         note.content = form.data['content']
         note.public = form.data['public']
-        note.updated_at = datetime.now()
+        note.updated_at = datetime.datetime.utcnow()
         db.session.commit()
         return note.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401

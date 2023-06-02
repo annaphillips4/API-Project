@@ -69,7 +69,7 @@ function Editor() {
         e.preventDefault()
         await dispatch(deleteNote(note))
         await dispatch(getNotes())
-        history.push(`/app/notebook/${note.notebookId}`)
+        history.push(`/app`)
     }
 
     const handleChangeNotebook = async (e) => {

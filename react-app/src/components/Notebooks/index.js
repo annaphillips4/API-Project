@@ -2,12 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteNotebook, getNotebooks, postNotebook, putNotebook } from "../../store/notebook";
 import { Link, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 // import { CompactPicker } from 'react-color'
 
 function Notebooks() {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     const notebooks = useSelector((state) => state.notebooks);
+    const notes = useSelector((state) => state.notes);
+    const firstNotebook = Object.values(notebooks).find(notebook => notebook.id);
     const currentUser = useSelector(state => state.session.user)
     const notebooksArr = Object.values(notebooks);
     const [showInput, setShowInput] = useState(false);
@@ -24,6 +28,25 @@ function Notebooks() {
     useEffect(() => {
         dispatch(getNotebooks())
     }, [dispatch]);
+
+    const sortedNotes = Object.values(notes).sort((a, b) => {
+        const dateA = new Date(a.updatedAt);
+        const dateB = new Date(b.updatedAt);
+        return dateB - dateA;
+    });
+
+
+    // console.log(Object.values(notes)[0].updatedAt > Object.values(notes)[3].updatedAt)
+
+    if (location.pathname === '/app') {
+        if (sortedNotes[0]) {
+            history.push(`/app/notebook/${sortedNotes[0].notebookId}/note/${sortedNotes[0].id}`)
+        }
+    }
+
+    // console.log(`location:: ${location.pathname === '/app'}`)
+    // console.log(`first notebook:: ${JSON.stringify(firstNotebook)}`)
+    // console.log(`${JSON.stringify(notebooks)}`)
 
     const handleAddNotebook = () => {
         setShowInput(true);
@@ -74,6 +97,7 @@ function Notebooks() {
     const handleDelete = async () => {
         await dispatch(deleteNotebook(selectedNotebook))
         await dispatch(getNotebooks())
+        history.push(`/app`)
         toggleContextMenu()
     }
 
