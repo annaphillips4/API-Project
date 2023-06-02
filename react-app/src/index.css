@@ -66,7 +66,7 @@ body {
 .ql-editor {
     flex-grow: 1;
     overflow-y: auto;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 230px);
     /* Adjust the value as needed */
 }
 
@@ -196,11 +196,24 @@ i {
 
 .note-title {
     font-weight: lighter;
+    max-width: 700px;
+    border-bottom: 1px solid rgb(215, 216, 217);
+    padding-bottom: 5px;
 }
 
 .note-updated {
     font-size: small;
     font-weight: lighter;
     letter-spacing: 0.1em;
-    color: #4d4d4d
+    color: #4d4d4d;
+    margin-top: -10px;
+}
+
+.note-bar {
+    max-width: 700px;
+    position: absolute;
+    border-left: 1px solid rgb(215, 216, 217);
+    top: 10px;
+    left: 440px;
+    padding-left: 20px;
 }

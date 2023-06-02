@@ -9,7 +9,8 @@ def seed_notes():
         Note(name="Inspiring Quotes for Daily Motivation", content='"The only way to do great work is to love what you do." - Steve Jobs', public=False, user_id=1, notebook_id=2),
         Note(name="Empowering Words for Success", content='"The future belongs to those who believe in the beauty of their dreams." - Eleanor Roosevelt', public=False, user_id=1, notebook_id=2),
         Note(name="Quotes to Ignite Creativity", content='"Every artist was first an amateur." - Ralph Waldo Emerson', public=False, user_id=1, notebook_id=2),
-        Note(name="Words of Encouragement in Difficult Times", content='"Hardships often prepare ordinary people for an extraordinary destiny." - C.S. Lewis', public=False, user_id=1, notebook_id=2)
+        Note(name="Words of Encouragement in Difficult Times", content='"Hardships often prepare ordinary people for an extraordinary destiny." - C.S. Lewis', public=False, user_id=1, notebook_id=2),
+        Note(name="A note for book club", content='Testing content inside of the note for book club here. Checking some stuff...', public=False, user_id=2, notebook_id=6)
     ]
 
     db.session.add_all(notes)

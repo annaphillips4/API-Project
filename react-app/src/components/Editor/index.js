@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { putNote } from '../../store/note';
+import { deleteNote, getNotes, putNote } from '../../store/note';
 import Quill from 'quill';
+import { Redirect, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Editor() {
+    const dispatch = useDispatch()
     const { noteId } = useParams();
     const note = useSelector((state) => state.notes[noteId]);
-    const dispatch = useDispatch()
+    const notebooks = useSelector(state => state.notebooks)
+    const history = useHistory()
     const [editorContent, setEditorContent] = useState('');
+    const notebooksArr = Object.values(notebooks)
 
     useEffect(() => {
         const editor = document.createElement('div');
@@ -61,8 +65,34 @@ function Editor() {
         await dispatch(putNote(newNote))
     };
 
+    const handleDeleteNote = async (e, note) => {
+        e.preventDefault()
+        await dispatch(deleteNote(note))
+        await dispatch(getNotes())
+        history.push(`/app/notebook/${note.notebookId}`)
+    }
+
+    const handleChangeNotebook = async (e) => {
+        const selectedNotebookId = e.target.value;
+
+      };
+
     return (
         <>
+            <div className='note-bar'>
+                <button onClick={handleSaveNote}>Save</button>
+                <button onClick={(e) => handleDeleteNote(e, note)}>Delete</button>
+                <select onChange={handleChangeNotebook}>
+                    <option value="" disabled>
+                        Move to notebook...
+                    </option>
+                    {notebooksArr.map((notebook) => (
+                        <option key={notebook.id} value={notebook.id}>
+                            {notebook.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <h1 className="note-title">{note.name}</h1>
             <h2 className="note-updated">
                 {new Date(note.updatedAt).toLocaleDateString("en-US", {
@@ -78,7 +108,6 @@ function Editor() {
             </h2>
 
             <div id="editor-container"></div>
-            <button onClick={handleSaveNote}>Save</button>
         </>
     );
 }

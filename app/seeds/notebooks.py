@@ -8,7 +8,7 @@ def seed_notebooks():
         Notebook(name='Bucket List!', color='#D0ECE7', description="Travel destinations, thrilling adventures, personal goals, and exciting challenges I want to accomplish and check off one by one!", user_id=1),
         Notebook(name='Creative Writing', color='#F5F5F5', description="Where I create captivating stories, poems, and character sketches. It's my personal space to unleash my creativity and capture my literary inspirations.", user_id=1),
         Notebook(name='Personal', color='#E6EE9C', description="Reflection of my life: a diary, a journal, and a sanctuary for my thoughts, reflections, and ideas. This is where I pour my heart out, jot down memories, and keep a record of the things that hold significance to me.", user_id=1),
-        Notebook(name='Book Club', color='#F0FFF0', description="Delving into the world of literature with fellow book enthusiasts. A space where we share book recommendations, summaries, and engage in discussions about the books we read. It's like our virtual library where we exchange thoughts and insights with each other.", user_id=1)
+        Notebook(name='Book Club', color='#F0FFF0', description="Delving into the world of literature with fellow book enthusiasts. A space where we share book recommendations, summaries, and engage in discussions about the books we read. It's like our virtual library where we exchange thoughts and insights with each other.", user_id=2)
     ]
 
     db.session.add_all(notebooks)

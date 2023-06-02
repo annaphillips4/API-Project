@@ -17,6 +17,7 @@ function Notebooks() {
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [renamingNotebook, setRenamingNotebook] = useState(false);
     const [newName, setNewName] = useState("")
+    const [submit, setSubmit] = useState(false)
     // const [changingColor, setChangingColor] = useState(false)
     const contextMenuRef = useRef(null);
 
@@ -26,15 +27,6 @@ function Notebooks() {
 
     const handleAddNotebook = () => {
         setShowInput(true);
-    };
-
-    const handleInputBlur = (e) => {
-        if (name.trim() === "") {
-            setName("New Notebook")
-            setShowInput(false);
-        } else {
-            handleFormSubmit(e)
-        }
     };
 
     const handleInputChange = (e) => {
@@ -48,6 +40,7 @@ function Notebooks() {
 
         setName("New Notebook");
         setShowInput(false);
+        setSubmit(false)
         history.push(`/app/notebook/${newNotebook.id}`)
     };
 
@@ -150,10 +143,9 @@ function Notebooks() {
                         type="text"
                         value={name}
                         onChange={handleInputChange}
-                        onBlur={handleInputBlur}
                         autoFocus
                     />
-                    <div className='submit' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-check"></i> Submit</div>
+                    <div className='submit' onClick={(e) => { setName("New Notebook"); setShowInput(false); setSubmit(true); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
                     <div className='cancel' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
                 </form>
             ) : (
@@ -170,18 +162,14 @@ function Notebooks() {
                 >
                     <table>
                         <tbody>
-                            <div className="context-option" onClick={handleDelete}>
-                                <tr>
-                                    <td><i class="fa-solid fa-x" /></td>
-                                    <td>Delete Notebook</td>
-                                </tr>
-                            </div>
-                            <div className="context-option" onClick={() => startRename(selectedNotebook)}>
-                                <tr>
-                                    <td><i className="fa-solid fa-i-cursor" /></td>
-                                    <td>Rename Notebook</td>
-                                </tr>
-                            </div>
+                            <tr className="context-option" onClick={handleDelete}>
+                                <td><i class="fa-solid fa-x" /></td>
+                                <td>Delete Notebook</td>
+                            </tr>
+                            <tr className="context-option" onClick={() => startRename(selectedNotebook)}>
+                                <td><i className="fa-solid fa-i-cursor" /></td>
+                                <td>Rename Notebook</td>
+                            </tr>
                             {/* <div className="context-option" onClick={handleChangeColor}>
                                 <tr>
                                     <td><i className="fa-solid fa-palette" /></td>

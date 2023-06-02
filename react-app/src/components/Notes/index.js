@@ -12,6 +12,7 @@ function Notes() {
     const notesArr = Object.values(notes);
     const [showInput, setShowInput] = useState(false);
     const [name, setName] = useState("New Note");
+    const [submit, setSubmit] = useState(false)
 
     const notebookId = location.pathname.split("/")[3];
 
@@ -21,15 +22,6 @@ function Notes() {
 
     const handleAddNote = () => {
         setShowInput(true);
-    };
-
-    const handleInputBlur = (e) => {
-        if (name.trim() === "") {
-            setName("New Note")
-            setShowInput(false);
-        } else {
-            handleFormSubmit(e)
-        }
     };
 
     const handleInputChange = (e) => {
@@ -43,6 +35,7 @@ function Notes() {
 
         setName("New Note");
         setShowInput(false);
+        setSubmit(false)
         history.push(`/app/notebook/${newNote.notebookId}/note/${newNote.id}`)
     };
 
@@ -74,21 +67,24 @@ function Notes() {
                         }
                         return null;
                     })}
-                    {showInput &&
+                    {showInput ? (
                         <form onSubmit={handleFormSubmit}>
                             <input
+                                className="add-input"
                                 type="text"
                                 value={name}
                                 onChange={handleInputChange}
-                                onBlur={handleInputBlur}
                                 autoFocus
                             />
-                            <div className='cancel' onClick={() => { setName("New Note"); setShowInput(false) }}><i class="fa-solid fa-xmark"></i> Cancel</div>
+                            <div className='submit' onClick={(e) => { setName("New Note"); setShowInput(false); setSubmit(true); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
+                            <div className='cancel' onClick={() => { setName("New Note"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
                         </form>
+                    ) : (
+                        <div className="add-new" onClick={handleAddNote}>
+                            <i className="fa-solid fa-plus"></i>Add a New Note
+                        </div>
+                    )
                     }
-                    <div className="add-new" onClick={handleAddNote}>
-                        <i className="fa-solid fa-plus"></i>Add a New Note
-                    </div>
                 </Route>
             </Switch>
         </div>
