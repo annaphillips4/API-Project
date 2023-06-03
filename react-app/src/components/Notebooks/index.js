@@ -12,7 +12,6 @@ function Notebooks() {
     const location = useLocation();
     const notebooks = useSelector((state) => state.notebooks);
     const notes = useSelector((state) => state.notes);
-    const firstNotebook = Object.values(notebooks).find(notebook => notebook.id);
     const currentUser = useSelector(state => state.session.user)
     const notebooksArr = Object.values(notebooks);
     const notesArr = Object.values(notes)
@@ -23,7 +22,6 @@ function Notebooks() {
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [renamingNotebook, setRenamingNotebook] = useState(false);
     const [newName, setNewName] = useState("")
-    const [submit, setSubmit] = useState(false)
     // const [changingColor, setChangingColor] = useState(false)
     const contextMenuRef = useRef(null);
 
@@ -45,10 +43,6 @@ function Notebooks() {
         }
     }
 
-    // console.log(`location:: ${location.pathname === '/app'}`)
-    // console.log(`first notebook:: ${JSON.stringify(firstNotebook)}`)
-    // console.log(`${JSON.stringify(notebooks)}`)
-
     const handleAddNotebook = () => {
         setShowInput(true);
     };
@@ -64,7 +58,6 @@ function Notebooks() {
 
         setName("New Notebook");
         setShowInput(false);
-        setSubmit(false)
         history.push(`/app/notebook/${newNotebook.id}`)
     };
 
@@ -170,7 +163,7 @@ function Notebooks() {
                         onChange={handleInputChange}
                         autoFocus
                     />
-                    <div className='submit' onClick={(e) => { setName("New Notebook"); setShowInput(false); setSubmit(true); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
+                    <div className='submit' onClick={(e) => { setName("New Notebook"); setShowInput(false); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
                     <div className='cancel' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
                 </form>
             ) : (

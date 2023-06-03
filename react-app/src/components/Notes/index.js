@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotes, postNote } from "../../store/note";
-import { Link, Switch, Route, useHistory, useLocation, Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, Switch, Route, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function Notes() {
     const dispatch = useDispatch();
@@ -12,7 +12,6 @@ function Notes() {
     const notesArr = Object.values(notes);
     const [showInput, setShowInput] = useState(false);
     const [name, setName] = useState("New Note");
-    const [submit, setSubmit] = useState(false)
 
     const notebookId = location.pathname.split("/")[3];
     const noteId = location.pathname.split("/")[5]
@@ -50,7 +49,6 @@ function Notes() {
 
         setName("New Note");
         setShowInput(false);
-        setSubmit(false)
         history.push(`/app/notebook/${newNote.notebookId}/note/${newNote.id}`)
     };
 
@@ -91,7 +89,7 @@ function Notes() {
                                 onChange={handleInputChange}
                                 autoFocus
                             />
-                            <div className='submit' onClick={(e) => { setName("New Note"); setShowInput(false); setSubmit(true); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
+                            <div className='submit' onClick={(e) => { setName("New Note"); setShowInput(false); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
                             <div className='cancel' onClick={() => { setName("New Note"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
                         </form>
                     ) : (

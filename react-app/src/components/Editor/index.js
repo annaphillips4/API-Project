@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { deleteNote, getNotes, putNote } from '../../store/note';
 import Quill from 'quill';
-import { Redirect, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Editor() {
     const dispatch = useDispatch()
@@ -84,7 +84,7 @@ function Editor() {
     }
 
     const handleChangeNotebook = async (e) => {
-        const selectedNotebookId = e.target.value;
+        // const selectedNotebookId = e.target.value;
 
     };
 
