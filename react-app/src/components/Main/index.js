@@ -28,12 +28,14 @@ function Main() {
                     <Switch>
                         <Route exact path='/app'>
                             <div className='message'>
-                                Select a notebook or add a new notebook to begin.
+                                <h1>You don't have any notebooks yet.</h1>
+                                <h2>Click Add a Notebook to start.</h2>
                             </div>
                         </Route>
                         <Route exact path='/app/notebook/:notebookId'>
                             <div className='message'>
-                                Select a note or add a new note to begin.
+                                <h1>This notebook doesn't have notes yet.</h1>
+                                <h2>Click Add a New Note to start taking notes.</h2>
                             </div>
                         </Route>
                         <Route exact path='/app/notebook/:notebookId/note/:noteId'>

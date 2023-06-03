@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteNotebook, getNotebooks, postNotebook, putNotebook } from "../../store/notebook";
 import { Link, useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { getNotes } from "../../store/note";
 // import { CompactPicker } from 'react-color'
 
 function Notebooks() {
@@ -14,6 +15,7 @@ function Notebooks() {
     const firstNotebook = Object.values(notebooks).find(notebook => notebook.id);
     const currentUser = useSelector(state => state.session.user)
     const notebooksArr = Object.values(notebooks);
+    const notesArr = Object.values(notes)
     const [showInput, setShowInput] = useState(false);
     const [name, setName] = useState("New Notebook");
     const [showContextMenu, setShowContextMenu] = useState(false)
@@ -25,20 +27,19 @@ function Notebooks() {
     // const [changingColor, setChangingColor] = useState(false)
     const contextMenuRef = useRef(null);
 
+    const notebookLocationId = location.pathname.split("/")[3];
+
     useEffect(() => {
         dispatch(getNotebooks())
     }, [dispatch]);
 
-    const sortedNotes = Object.values(notes).sort((a, b) => {
-        const dateA = new Date(a.updatedAt);
-        const dateB = new Date(b.updatedAt);
-        return dateB - dateA;
-    });
-
-
-    // console.log(Object.values(notes)[0].updatedAt > Object.values(notes)[3].updatedAt)
-
     if (location.pathname === '/app') {
+        dispatch(getNotes())
+        const sortedNotes = notesArr.sort((a, b) => {
+            const dateA = new Date(a.updatedAt);
+            const dateB = new Date(b.updatedAt);
+            return dateB - dateA;
+        });
         if (sortedNotes[0]) {
             history.push(`/app/notebook/${sortedNotes[0].notebookId}/note/${sortedNotes[0].id}`)
         }
@@ -95,8 +96,8 @@ function Notebooks() {
     }, []);
 
     const handleDelete = async () => {
+        console.log(`DELETED NOTEBOOK::::: ${selectedNotebook}`)
         await dispatch(deleteNotebook(selectedNotebook))
-        await dispatch(getNotebooks())
         history.push(`/app`)
         toggleContextMenu()
     }
@@ -127,12 +128,12 @@ function Notebooks() {
 
     return (
         <div className="notebooksListContainer">
-            <h3>Notebooks</h3>
+            <div className="sidebar-header">Notebooks</div>
             {notebooksArr.map((notebookObj) => {
                 let notebookId = notebookObj.id
                 return <Link to={`/app/notebook/${notebookId}`} className='tab-links'><div
                     key={notebookObj.id}
-                    className="notebook-tab"
+                    className={`notebook-tab ${parseInt(notebookLocationId) === notebookObj.id ? 'selected' : ''}`}
                     onContextMenu={(e) => {
                         handleContextMenu(e, notebookObj.id);
                         setSelectedNotebook(notebookObj.id);

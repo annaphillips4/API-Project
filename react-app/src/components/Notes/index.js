@@ -15,6 +15,21 @@ function Notes() {
     const [submit, setSubmit] = useState(false)
 
     const notebookId = location.pathname.split("/")[3];
+    const noteId = location.pathname.split("/")[5]
+    // console.log(location.pathname.split("/").length)
+    // console.log(location.pathname.split("/")[2] === 'notebook')
+
+    if (location.pathname === '/app') {
+        dispatch(getNotes())}
+
+    if (location.pathname.split("/").length === 4 && location.pathname.split("/")[2] === 'notebook') {
+        if (notesArr[0]) {
+            const notebookFirstNote = notesArr.find(note => note.notebookId === parseInt(notebookId))
+            if (notebookFirstNote) {
+                history.push(`/app/notebook/${notebookId}/note/${notebookFirstNote.id}`)
+            }
+        }
+    }
 
     useEffect(() => {
         dispatch(getNotes())
@@ -47,7 +62,7 @@ function Notes() {
 
     return (
         <div className="notesListContainer">
-            <h3>Notes</h3>
+            <div className="sidebar-header">Notes</div>
             <Switch>
                 <Route exact path='/app'>
                     <div>Select a notebook to view its notes.</div>
@@ -58,7 +73,7 @@ function Notes() {
                             const textContent = removeHTMLTags(noteObj.content);
                             return (
                                 <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`} className="tab-links">
-                                    <div className="note-whole-tab">
+                                    <div className={`note-whole-tab ${parseInt(noteId) === noteObj.id ? 'selected' : ''}`}>
                                         <div className="note-name" key={noteObj.id}>{noteObj.name}</div>
                                         <div className="note-first-lines">{textContent}</div>
                                     </div>

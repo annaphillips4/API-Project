@@ -12,6 +12,8 @@ function Editor() {
     const notebooks = useSelector(state => state.notebooks)
     const history = useHistory()
     const [editorContent, setEditorContent] = useState('');
+    const [rename, setRename] = useState(false)
+    const [newName, setNewName] = useState(note.name)
     const notebooksArr = Object.values(notebooks)
 
     useEffect(() => {
@@ -48,6 +50,7 @@ function Editor() {
 
         if (note) {
             quill.root.innerHTML = note.content; // Set initial content from the note
+            setNewName(note.name)
         }
 
         return () => {
@@ -72,10 +75,18 @@ function Editor() {
         history.push(`/app`)
     }
 
+    const handleRename = async (e) => {
+        e.preventDefault()
+        const noteContents = document.querySelector('.ql-editor').innerHTML
+        const newNote = { id: note.id, name: newName, content: noteContents}
+        await dispatch(putNote(newNote))
+        setRename(false)
+    }
+
     const handleChangeNotebook = async (e) => {
         const selectedNotebookId = e.target.value;
 
-      };
+    };
 
     return (
         <>
@@ -93,7 +104,19 @@ function Editor() {
                     ))}
                 </select>
             </div>
-            <h1 className="note-title">{note.name}</h1>
+            {rename ? (
+                <form onSubmit={handleRename}>
+                    <h1><input
+                        className='rename-note'
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        onBlur={() => setRename(false)}
+                        autoFocus
+                    /></h1>
+                </form>
+            ) : (
+                <h1 className="note-title" onClick={() => setRename(true)}>{note.name}</h1>
+            )}
             <h2 className="note-updated">
                 {new Date(note.updatedAt).toLocaleDateString("en-US", {
                     weekday: "long",
