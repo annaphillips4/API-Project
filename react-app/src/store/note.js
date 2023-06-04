@@ -70,7 +70,7 @@ export const deleteNote = (note) => async (dispatch) => {
         }
     });
     const deleteMessage = await res.json();
-    dispatch(remove(note.id));
+    dispatch(remove(note));
     return deleteMessage;
 }
 

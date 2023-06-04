@@ -16,9 +16,6 @@ function Notes() {
     const notebookId = location.pathname.split("/")[3];
     const noteId = location.pathname.split("/")[5]
 
-    if (location.pathname === '/app') {
-        dispatch(getNotes())}
-
     if (location.pathname.split("/").length === 4 && location.pathname.split("/")[2] === 'notebook') {
         if (notesArr[0]) {
             const notebookFirstNote = notesArr.find(note => note.notebookId === parseInt(notebookId))
@@ -68,9 +65,9 @@ function Notes() {
                         if (noteObj.notebookId === parseInt(notebookId)) {
                             const textContent = removeHTMLTags(noteObj.content);
                             return (
-                                <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`} className="tab-links">
+                                <Link to={`/app/notebook/${notebookId}/note/${noteObj.id}`} className="tab-links" key={noteObj.id}>
                                     <div className={`note-whole-tab ${parseInt(noteId) === noteObj.id ? 'selected' : ''}`}>
-                                        <div className="note-name" key={noteObj.id}>{noteObj.name}</div>
+                                        <div className="note-name">{noteObj.name}</div>
                                         <div className="note-first-lines">{textContent}</div>
                                     </div>
                                 </Link>
@@ -87,8 +84,8 @@ function Notes() {
                                 onChange={handleInputChange}
                                 autoFocus
                             />
-                            <div className='submit' onClick={(e) => { setName("New Note"); setShowInput(false); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
-                            <div className='cancel' onClick={() => { setName("New Note"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
+                            <div className='submit' onClick={(e) => { setName("New Note"); setShowInput(false); handleFormSubmit(e); }}><i className="fa-solid fa-check"></i> Submit</div>
+                            <div className='cancel' onClick={() => { setName("New Note"); setShowInput(false) }}><i className="fa-solid fa-x"></i> Cancel</div>
                         </form>
                     ) : (
                         <div className="add-new" onClick={handleAddNote}>

@@ -15,6 +15,7 @@ function Editor() {
     const [editorContent, setEditorContent] = useState('');
     const [rename, setRename] = useState(false)
     const [newName, setNewName] = useState(note?.name)
+    const [moveToValue, setMoveToValue] = useState('')
     const notebooksArr = Object.values(notebooks)
 
     const notebookId = location.pathname.split("/")[3];
@@ -67,7 +68,7 @@ function Editor() {
     const handleSaveNote = async (e) => {
         e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
-        const newNote = { id: note.id, content: noteContents, name: note.name }
+        const newNote = { id: note.id, content: noteContents, name: note.name, notebook_id: note.notebookId }
         await dispatch(putNote(newNote))
     };
 
@@ -81,7 +82,7 @@ function Editor() {
     const handleRename = async (e) => {
         e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
-        const newNote = { id: note.id, name: newName, content: noteContents }
+        const newNote = { id: note.id, name: newName, content: noteContents, notebook_id: note.notebookId }
         await dispatch(putNote(newNote))
         setRename(false)
     }
@@ -92,6 +93,7 @@ function Editor() {
         const noteContents = document.querySelector('.ql-editor').innerHTML
         const newNote = { id: note.id, name: newName, content: noteContents, notebook_id: selectedNotebookId }
         await dispatch(putNote(newNote))
+        e.target.value = ''
         history.push(`/app/notebook/${selectedNotebookId}/note/${note.id}`)
     };
 
@@ -100,8 +102,8 @@ function Editor() {
             <div className='note-bar'>
                 <button onClick={handleSaveNote}>Save</button>
                 <button onClick={(e) => handleDeleteNote(e, note)}>Delete</button>
-                <select onChange={handleChangeNotebook}>
-                    <option value="" disabled selected>
+                <select onChange={handleChangeNotebook} defaultValue={''}>
+                    <option value={''} disabled>
                         Move to notebook...
                     </option>
                     {notebooksArr.map((notebook) => (

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteNotebook, getNotebooks, postNotebook, putNotebook } from "../../store/notebook";
 import { Link, useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
-import { getNotes } from "../../store/note";
+import { deleteNote } from "../../store/note";
 // import { CompactPicker } from 'react-color'
 
 function Notebooks() {
@@ -32,7 +32,6 @@ function Notebooks() {
     }, [dispatch]);
 
     if (location.pathname === '/app') {
-        dispatch(getNotes())
         const sortedNotes = notesArr.sort((a, b) => {
             const dateA = new Date(a.updatedAt);
             const dateB = new Date(b.updatedAt);
@@ -89,6 +88,11 @@ function Notebooks() {
     }, []);
 
     const handleDelete = async () => {
+        notesArr.map(async (note) => {
+            if (note.notebookId === selectedNotebook) {
+                await dispatch(deleteNote(note))
+            }
+        })
         await dispatch(deleteNotebook(selectedNotebook))
         history.push(`/app`)
         toggleContextMenu()
@@ -123,7 +127,7 @@ function Notebooks() {
             <div className="sidebar-header">Notebooks</div>
             {notebooksArr.map((notebookObj) => {
                 let notebookId = notebookObj.id
-                return <Link to={`/app/notebook/${notebookId}`} className='tab-links'><div
+                return <Link to={`/app/notebook/${notebookId}`} className='tab-links' key={notebookObj.id}><div
                     key={notebookObj.id}
                     className={`notebook-tab ${parseInt(notebookLocationId) === notebookObj.id ? 'selected' : ''}`}
                     onContextMenu={(e) => {
@@ -143,7 +147,7 @@ function Notebooks() {
                             />
                         </form>
                     ) : (
-                        <><i class="fa-solid fa-book" style={{ color: notebookObj.color }}></i> {notebookObj.name}</>
+                        <><i className="fa-solid fa-book" style={{ color: notebookObj.color }}></i> {notebookObj.name}</>
                     )}
                     {/* {changingColor && notebookObj.id === selectedNotebook &&
                         <div style={{ position: 'absolute', top: contextMenuPosition.y, left: contextMenuPosition.x }}>
@@ -162,8 +166,8 @@ function Notebooks() {
                         onChange={handleInputChange}
                         autoFocus
                     />
-                    <div className='submit' onClick={(e) => { setName("New Notebook"); setShowInput(false); handleFormSubmit(e); }}><i class="fa-solid fa-check"></i> Submit</div>
-                    <div className='cancel' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i class="fa-solid fa-x"></i> Cancel</div>
+                    <div className='submit' onClick={(e) => { setName("New Notebook"); setShowInput(false); handleFormSubmit(e); }}><i className="fa-solid fa-check"></i> Submit</div>
+                    <div className='cancel' onClick={() => { setName("New Notebook"); setShowInput(false) }}><i className="fa-solid fa-x"></i> Cancel</div>
                 </form>
             ) : (
                 <div className="add-new" onClick={handleAddNotebook}>
@@ -180,7 +184,7 @@ function Notebooks() {
                     <table>
                         <tbody>
                             <tr className="context-option" onClick={handleDelete}>
-                                <td><i class="fa-solid fa-x" /></td>
+                                <td><i className="fa-solid fa-x" /></td>
                                 <td>Delete Notebook</td>
                             </tr>
                             <tr className="context-option" onClick={() => startRename(selectedNotebook)}>

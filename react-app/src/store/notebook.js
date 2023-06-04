@@ -28,7 +28,7 @@ export const getNotebooks = () => async (dispatch) => {
             "Content-Type": "application/json"
         }
     });
-    if(res.ok) {
+    if (res.ok) {
         const data = await res.json();
         dispatch(load(data));
         return data;
@@ -42,7 +42,7 @@ export const postNotebook = (notebook) => async (dispatch) => {
         },
         body: JSON.stringify(notebook)
     });
-    if(res.ok) {
+    if (res.ok) {
         const data = await res.json();
         dispatch(add(data));
         return data;
@@ -56,7 +56,7 @@ export const putNotebook = (notebook) => async (dispatch) => {
         },
         body: JSON.stringify(notebook)
     });
-    if(res.ok) {
+    if (res.ok) {
         const data = await res.json();
         dispatch(edit(data));
         return data;
@@ -76,20 +76,20 @@ export const deleteNotebook = (notebook) => async (dispatch) => {
 
 const initialState = {}
 // Reducer
-const notebooks = (state=initialState, action) => {
+const notebooks = (state = initialState, action) => {
     let newState = {};
-    switch(action.type){
+    switch (action.type) {
         case LOAD_NOTEBOOKS:
             return { ...state, ...action.notebooks };
         case ADD_NOTEBOOK:
             newState = { ...state, [action.notebook.id]: action.notebook };
             return newState;
         case EDIT_NOTEBOOK:
-            return { ...state, [action.notebook.id]: { ...action.notebook }}
+            return { ...state, [action.notebook.id]: { ...action.notebook } }
         case REMOVE_NOTEBOOK:
-            newState = { ...state }
-            delete newState[action.notebook]
-            return newState
+            newState = { ...state };
+            delete newState[action.notebook];
+            return newState;
         default:
             return state;
     };

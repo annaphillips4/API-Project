@@ -74,7 +74,7 @@ body {
 
 #editor-container {
     background-color: white;
-    max-width: 700px;
+    width: 700px;
     overflow-y: auto;
     flex-grow: 1;
 }
@@ -322,7 +322,7 @@ i {
 .rename-note {
     font-weight: lighter;
     font-size: inherit;
-    width: 700px;
+    width: 696px;
     padding-bottom: 5px;
     filter: none;
     outline: none;
