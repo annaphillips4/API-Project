@@ -35,8 +35,6 @@ export const getNotes = () => async (dispatch) => {
     };
 };
 export const postNote = (note) => async (dispatch) => {
-    console.log(note)
-    console.log(JSON.stringify(note))
     const res = await fetch('/api/notes/', {
         method: "POST",
         headers: {

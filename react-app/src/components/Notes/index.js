@@ -15,8 +15,6 @@ function Notes() {
 
     const notebookId = location.pathname.split("/")[3];
     const noteId = location.pathname.split("/")[5]
-    // console.log(location.pathname.split("/").length)
-    // console.log(location.pathname.split("/")[2] === 'notebook')
 
     if (location.pathname === '/app') {
         dispatch(getNotes())}

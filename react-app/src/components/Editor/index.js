@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { deleteNote, getNotes, putNote } from '../../store/note';
 import Quill from 'quill';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Editor() {
     const dispatch = useDispatch()
+    const location = useLocation();
     const { noteId } = useParams();
     const note = useSelector((state) => state.notes[noteId]);
     const notebooks = useSelector(state => state.notebooks)
@@ -15,6 +16,8 @@ function Editor() {
     const [rename, setRename] = useState(false)
     const [newName, setNewName] = useState(note?.name)
     const notebooksArr = Object.values(notebooks)
+
+    const notebookId = location.pathname.split("/")[3];
 
     useEffect(() => {
         const editor = document.createElement('div');
@@ -78,14 +81,18 @@ function Editor() {
     const handleRename = async (e) => {
         e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
-        const newNote = { id: note.id, name: newName, content: noteContents}
+        const newNote = { id: note.id, name: newName, content: noteContents }
         await dispatch(putNote(newNote))
         setRename(false)
     }
 
     const handleChangeNotebook = async (e) => {
-        // const selectedNotebookId = e.target.value;
-
+        e.preventDefault()
+        const selectedNotebookId = e.target.value;
+        const noteContents = document.querySelector('.ql-editor').innerHTML
+        const newNote = { id: note.id, name: newName, content: noteContents, notebook_id: selectedNotebookId }
+        await dispatch(putNote(newNote))
+        history.push(`/app/notebook/${selectedNotebookId}/note/${note.id}`)
     };
 
     return (
@@ -94,13 +101,15 @@ function Editor() {
                 <button onClick={handleSaveNote}>Save</button>
                 <button onClick={(e) => handleDeleteNote(e, note)}>Delete</button>
                 <select onChange={handleChangeNotebook}>
-                    <option value="" disabled>
+                    <option value="" disabled selected>
                         Move to notebook...
                     </option>
                     {notebooksArr.map((notebook) => (
-                        <option key={notebook.id} value={notebook.id}>
-                            {notebook.name}
-                        </option>
+                        notebook.id !== parseInt(notebookId) && (
+                            <option key={notebook.id} value={notebook.id}>
+                                {notebook.name}
+                            </option>
+                        )
                     ))}
                 </select>
             </div>

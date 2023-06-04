@@ -16,7 +16,7 @@ body {
     width: 100%;
     padding: 10px;
     background-color: rgb(235, 236, 237);
-    filter: drop-shadow(-5px 0 5px rgb(163, 163, 163));
+    border-bottom: 1px solid rgb(215, 216, 217);
     position: sticky;
     font-weight: bold;
     color: #444444;
@@ -24,7 +24,7 @@ body {
 
 .dark-mode .userbar {
     background-color: rgb(60, 61, 62);
-    filter: drop-shadow(-5px 0 5px rgb(24, 24, 24));
+    border-bottom: 1px solid rgb(20, 21, 22);
     color: #ccc;
 }
 
@@ -294,7 +294,7 @@ i {
     max-width: 700px;
     position: absolute;
     border-left: 1px solid rgb(215, 216, 217);
-    top: 10px;
+    top: 12px;
     left: 440px;
     padding-left: 20px;
 }
@@ -344,17 +344,12 @@ i {
     font-weight: lighter;
     border-bottom: 1px solid rgb(215, 216, 217);
     padding-bottom: 5px;
-    margin: 20px 0 10px 0
+    margin: 10px 0;
 }
 
 .dark-mode .sidebar-header {
     border-bottom: 1px solid rgb(20, 21, 22);
     color: #ccc;
-}
-
-.mode {
-    display: inline;
-    margin-left: 40px;
 }
 
 .selected {

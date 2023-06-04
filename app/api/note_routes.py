@@ -38,6 +38,7 @@ def edit_note(note_id):
     elif form.validate_on_submit():
         note.name = form.data['name']
         note.content = form.data['content']
+        note.notebook_id = form.data['notebook_id']
         note.public = form.data['public']
         note.updated_at = datetime.datetime.utcnow()
         db.session.commit()

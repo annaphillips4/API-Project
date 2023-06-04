@@ -89,7 +89,6 @@ function Notebooks() {
     }, []);
 
     const handleDelete = async () => {
-        console.log(`DELETED NOTEBOOK::::: ${selectedNotebook}`)
         await dispatch(deleteNotebook(selectedNotebook))
         history.push(`/app`)
         toggleContextMenu()

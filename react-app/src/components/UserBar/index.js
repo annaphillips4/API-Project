@@ -50,14 +50,13 @@ function UserBar() {
     return (
         <div className='userbar'>
             <i className="fa-solid fa-arrow-right-from-bracket" onClick={handleLogout}></i>
-            {sessionUser.firstName} {sessionUser.lastName} |
 
-            <i className="fa-solid fa-magnifying-glass"></i>
             <div className="search-bar" onBlur={(e) => hide(e)}>
                 <input onChange={(e) => setQuery(e.target.value)} onFocus={() => show()} className="search-input" type="text" placeholder="Search..." ></input>
             </div>
 
             <div className="search-results hidden">
+                <div className='sidebar-header'>Search</div>
                 {notesArr.filter(note => {
                     if (query === "") {
                         return null;
@@ -81,8 +80,6 @@ function UserBar() {
                 <i className="fa-solid fa-toggle-on" />
                 <i className="fa-solid fa-moon" />
             </div>
-            {console.log(darkMode)}
-            {/* <i class="fa-solid fa-angles-left"></i> */}
         </div>
     )
 }
