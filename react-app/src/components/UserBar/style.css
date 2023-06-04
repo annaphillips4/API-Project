@@ -9,6 +9,7 @@
     filter: none;
     outline: none;
     margin: 0 10px;
+    width: 300px;
 }
 
 .dark-mode .search-bar input {

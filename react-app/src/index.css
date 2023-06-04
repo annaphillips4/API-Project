@@ -5,6 +5,12 @@ body {
     max-height: 100vh;
 }
 
+@media (max-width: 1220px) {
+    body {
+        overflow-x: scroll;
+    }
+}
+
 .app-container {
     display: flex;
     flex-direction: column;
@@ -244,6 +250,7 @@ i {
     font-size: smaller;
     display: inline-block;
 }
+
 .cancel:hover {
     cursor: pointer;
 }
@@ -258,6 +265,7 @@ i {
     display: inline-block;
     margin: 0px 20px 0px 10px;
 }
+
 .submit:hover {
     cursor: pointer;
 }
@@ -294,18 +302,34 @@ i {
     max-width: 700px;
     position: absolute;
     border-left: 1px solid rgb(215, 216, 217);
-    top: 12px;
+    top: 10px;
     left: 440px;
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
 .dark-mode .note-bar {
-    max-width: 700px;
-    position: absolute;
     border-left: 1px solid rgb(30, 31, 32);
-    top: 10px;
-    left: 440px;
-    padding-left: 20px;
+}
+
+.note-bar button,
+.note-bar select {
+    padding: 5px 15px;
+    margin: 0 5px;
+    color: #333333;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: small;
+    border: 1px solid rgb(215, 216, 217);
+    background-color: rgb(245, 246, 247);
+}
+
+.dark-mode .note-bar button,
+.dark-mode .note-bar select {
+    color: #ccc;
+    border: 1px solid rgb(30, 31, 32);
+    background-color: rgb(37, 38, 39);
 }
 
 .message {
@@ -314,7 +338,8 @@ i {
     font-weight: lighter;
 }
 
-.message h1, .message h2 {
+.message h1,
+.message h2 {
     font-weight: 100;
     color: #777;
 }
