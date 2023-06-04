@@ -13,7 +13,7 @@ function Editor() {
     const history = useHistory()
     const [editorContent, setEditorContent] = useState('');
     const [rename, setRename] = useState(false)
-    const [newName, setNewName] = useState(note.name)
+    const [newName, setNewName] = useState(note?.name)
     const notebooksArr = Object.values(notebooks)
 
     useEffect(() => {
@@ -115,16 +115,16 @@ function Editor() {
                     /></h1>
                 </form>
             ) : (
-                <h1 className="note-title" onClick={() => setRename(true)}>{note.name}</h1>
+                <h1 className="note-title" onClick={() => setRename(true)}>{note?.name}</h1>
             )}
             <h2 className="note-updated">
-                {new Date(note.updatedAt).toLocaleDateString("en-US", {
+                {new Date(note?.updatedAt).toLocaleDateString("en-US", {
                     weekday: "long",
                     month: "long",
                     day: "numeric",
                     year: "numeric"
                 })}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {new Date(note.updatedAt).toLocaleTimeString("en-US", {
+                {new Date(note?.updatedAt).toLocaleTimeString("en-US", {
                     hour: "numeric",
                     minute: "numeric"
                 })}
