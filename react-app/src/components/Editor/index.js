@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { deleteNote, getNotes, putNote } from '../../store/note';
 import Quill from 'quill';
-import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
 
 function Editor() {
     const dispatch = useDispatch()
-    const location = useLocation();
-    const { noteId } = useParams();
+    const { notebookId, noteId } = useParams();
     const note = useSelector((state) => state.notes[noteId]);
+    // const notebook = useSelector((state) => state.notebooks[notebookId])
     const notebooks = useSelector(state => state.notebooks)
     const history = useHistory()
     const [editorContent, setEditorContent] = useState('');
     const [rename, setRename] = useState(false)
     const [newName, setNewName] = useState(note?.name)
-    const [moveToValue, setMoveToValue] = useState('')
     const notebooksArr = Object.values(notebooks)
-
-    const notebookId = location.pathname.split("/")[3];
 
     useEffect(() => {
         const editor = document.createElement('div');
@@ -57,6 +55,13 @@ function Editor() {
             setNewName(note.name)
         }
 
+        quill.focus();
+
+        setTimeout(() => {
+          const length = quill.getLength();
+          quill.setSelection(length, length);
+        }, 0);
+
         return () => {
             if (document.getElementById('editor-container')) {
                 const editorContainer = document.getElementById('editor-container');
@@ -65,8 +70,18 @@ function Editor() {
         };
     }, [note]);
 
-    const handleSaveNote = async (e) => {
-        e.preventDefault()
+    useEffect(() => {
+        const autosaveTimer = setTimeout(() => {
+            handleSaveNote();
+        }, 1000);
+
+        return () => {
+            clearTimeout(autosaveTimer);
+        };
+    }, [editorContent]);
+
+    const handleSaveNote = async () => {
+        // e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
         const newNote = { id: note.id, content: noteContents, name: note.name, notebook_id: note.notebookId }
         await dispatch(putNote(newNote))
