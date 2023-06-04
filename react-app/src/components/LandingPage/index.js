@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Route, Switch, Link, Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import { login, signUp } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
+import './style.css'
 
 function LandingPage() {
     const dispatch = useDispatch();
@@ -37,15 +38,15 @@ function LandingPage() {
     };
 
     return (
-        <div>
+        <div className='landing'>
             <Link to='/'>
                 <h1>Inkling</h1>
                 <h3>a note app</h3>
             </Link>
             <Switch>
                 <Route exact path='/'>
-                    <Link to='/login'>Login</Link>
-                    <Link to='/signup'>Sign Up</Link>
+                    <Link to='/login' className='log-buttons'>Login</Link>
+                    <Link to='/signup' className='log-buttons'>Sign Up</Link>
                 </Route>
                 <Route path='/login'>
                     <form onSubmit={handleLogin}>
@@ -61,7 +62,7 @@ function LandingPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                            />
+                            /><br/>
                         </label>
                         <label>
                             Password
@@ -70,11 +71,11 @@ function LandingPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                            />
+                            /><br/>
                         </label>
                         <button type="submit">Log In</button>
                     </form>
-                    <Link to='/signup'>Or make a new account</Link>
+                    <Link to='/signup' className='log-buttons'>Or make a new account</Link>
                 </Route>
                 <Route path='/signup'>
                     <form onSubmit={handleSignup}>
@@ -90,7 +91,7 @@ function LandingPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                            />
+                            /><br/>
                         </label>
                         <label>
                             Username
@@ -99,7 +100,7 @@ function LandingPage() {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
-                            />
+                            /><br/>
                         </label>
                         <label>
                             Password
@@ -108,7 +109,7 @@ function LandingPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                            />
+                            /><br/>
                         </label>
                         <label>
                             Confirm Password
@@ -117,11 +118,11 @@ function LandingPage() {
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
-                            />
+                            /><br/>
                         </label>
                         <button type="submit">Sign Up</button>
                     </form>
-                    Already have an account? <Link to='/login'>Click here to log in</Link>
+                    <div className='log-message'>Already have an account?</div> <Link to='/login' className='log-buttons'>Click here to log in</Link>
                 </Route>
             </Switch>
         </div>
