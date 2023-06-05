@@ -58,8 +58,8 @@ function Editor() {
         quill.focus();
 
         setTimeout(() => {
-          const length = quill.getLength();
-          quill.setSelection(length, length);
+            const length = quill.getLength();
+            quill.setSelection(length, length);
         }, 0);
 
         return () => {
@@ -112,6 +112,13 @@ function Editor() {
         history.push(`/app/notebook/${selectedNotebookId}/note/${note.id}`)
     };
 
+    const handlePrint = () => {
+        const printWindow = window.open("", "_blank");
+        printWindow.document.write(`<h1>${note.name}</h1>${note.content}`);
+        printWindow.document.close();
+        printWindow.print();
+    };
+
     return (
         <>
             <div className='note-bar'>
@@ -129,6 +136,7 @@ function Editor() {
                         )
                     ))}
                 </select>
+                <button onClick={() => handlePrint()}>Print</button>
             </div>
             {rename ? (
                 <form onSubmit={handleRename}>
