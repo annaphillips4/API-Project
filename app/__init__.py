@@ -1,4 +1,5 @@
 import os
+from app.models.db import db, environment, SCHEMA
 from flask import Flask, render_template, request, session, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -93,3 +94,13 @@ def react_root(path):
 @app.errorhandler(404)
 def not_found(e):
     return app.send_static_file('index.html')
+
+
+@seed_commands.command('all')
+def seed():
+    if environment == 'production':
+        # Before seeding, truncate all tables prefixed with schema name
+        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        # Add a truncate command here for every table that will be seeded.
+        db.session.commit()
+    seed_users()

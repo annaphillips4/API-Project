@@ -4,8 +4,8 @@ from flask_login import UserMixin
 class User_Note(db.Model, UserMixin):
     __tablename__= 'user_note'
 
-    if environment == 'production':
-        __table_args__= {'schema':SCHEMA}
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete="CASCADE"), primary_key=True)
     note_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notes.id'), ondelete="CASCADE"), primary_key=True)
