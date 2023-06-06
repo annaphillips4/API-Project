@@ -4,6 +4,9 @@ import { login, signUp } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import './style.css'
 
+const demo_email = "demo@aa.io";
+const demo_password = "password";
+
 function LandingPage() {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
@@ -13,7 +16,6 @@ function LandingPage() {
     const [errors, setErrors] = useState([]);
     const sessionUser = useSelector((state) => state.session.user);
     if (sessionUser) return <Redirect to="/app" />;
-
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -37,6 +39,14 @@ function LandingPage() {
         }
     };
 
+    const logInDemo = async (e) => {
+      e.preventDefault();
+      const data = await dispatch(login(demo_email, demo_password));
+      if (data) {
+        setErrors(data);
+      }
+    };
+
     return (
         <div className='landing'>
             <Link to='/'>
@@ -47,6 +57,7 @@ function LandingPage() {
                 <Route exact path='/'>
                     <Link to='/login' className='log-buttons'>Login</Link>
                     <Link to='/signup' className='log-buttons'>Sign Up</Link>
+                    <br /><button className='log-buttons' onClick={logInDemo}>Demo Login</button>
                 </Route>
                 <Route path='/login'>
                     <form onSubmit={handleLogin}>
@@ -62,7 +73,7 @@ function LandingPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                            /><br/>
+                            /><br />
                         </label>
                         <label>
                             Password
@@ -71,7 +82,7 @@ function LandingPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                            /><br/>
+                            /><br />
                         </label>
                         <button type="submit">Log In</button>
                     </form>
@@ -91,7 +102,7 @@ function LandingPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                            /><br/>
+                            /><br />
                         </label>
                         <label>
                             Username
@@ -100,7 +111,7 @@ function LandingPage() {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
-                            /><br/>
+                            /><br />
                         </label>
                         <label>
                             Password
@@ -109,7 +120,7 @@ function LandingPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                            /><br/>
+                            /><br />
                         </label>
                         <label>
                             Confirm Password
@@ -118,7 +129,7 @@ function LandingPage() {
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
-                            /><br/>
+                            /><br />
                         </label>
                         <button type="submit">Sign Up</button>
                     </form>
