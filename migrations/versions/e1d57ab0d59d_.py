@@ -1,12 +1,16 @@
 """empty message
 
 Revision ID: e1d57ab0d59d
-Revises: 
+Revises:
 Create Date: 2023-06-05 20:55:54.728374
 
 """
 from alembic import op
 import sqlalchemy as sa
+
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 
 # revision identifiers, used by Alembic.
@@ -29,6 +33,9 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+     if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('notebooks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
@@ -38,6 +45,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+     if environment == "production":
+        op.execute(f"ALTER TABLE notebooks SET SCHEMA {SCHEMA};")
+
     op.create_table('notes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
@@ -51,6 +61,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+     if environment == "production":
+        op.execute(f"ALTER TABLE notes SET SCHEMA {SCHEMA};")
+
     op.create_table('user_note',
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('note_id', sa.Integer(), nullable=False),
@@ -59,6 +72,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('user_id', 'note_id')
     )
+     if environment == "production":
+        op.execute(f"ALTER TABLE user_note SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
