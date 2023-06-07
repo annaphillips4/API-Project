@@ -57,12 +57,14 @@ function Editor() {
 
         quill.focus();
 
-        setTimeout(() => {
+        const quillTimeout = setTimeout(() => {
             const length = quill.getLength();
             quill.setSelection(length, length);
         }, 0);
 
         return () => {
+            clearTimeout(quillTimeout);
+
             if (document.getElementById('editor-container')) {
                 const editorContainer = document.getElementById('editor-container');
                 editorContainer.innerHTML = '';

@@ -38,6 +38,11 @@ function Notes() {
     };
 
     const handleFormSubmit = async (e) => {
+        if (name === '') {
+            setName("New Note");
+            setShowInput(false);
+            return
+        }
         e.preventDefault();
         const note = { name, user_id: currentUser.id, notebook_id: parseInt(notebookId) }
         let newNote = await dispatch(postNote(note))

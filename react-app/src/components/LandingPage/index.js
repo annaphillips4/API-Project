@@ -11,6 +11,8 @@ function LandingPage() {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState([]);
@@ -28,7 +30,7 @@ function LandingPage() {
     const handleSignup = async (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
-            const data = await dispatch(signUp(username, email, password));
+            const data = await dispatch(signUp(username, email, firstName, lastName, password));
             if (data) {
                 setErrors(data);
             }
@@ -52,12 +54,12 @@ function LandingPage() {
             <Link to='/'>
                 <h1>Inkling</h1>
                 <h3>a note app</h3>
+                <button className='log-buttons' onClick={logInDemo}>Demo Login</button><br />
             </Link>
             <Switch>
                 <Route exact path='/'>
                     <Link to='/login' className='log-buttons'>Login</Link>
                     <Link to='/signup' className='log-buttons'>Sign Up</Link>
-                    <br /><button className='log-buttons' onClick={logInDemo}>Demo Login</button>
                 </Route>
                 <Route path='/login'>
                     <form onSubmit={handleLogin}>
@@ -110,6 +112,24 @@ function LandingPage() {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
+                                required
+                            /><br />
+                        </label>
+                        <label>
+                            First Name
+                            <input
+                                type="text"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                            /><br />
+                        </label>
+                        <label>
+                            Last Name
+                            <input
+                                type="text"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 required
                             /><br />
                         </label>

@@ -51,6 +51,11 @@ function Notebooks() {
     };
 
     const handleFormSubmit = async (e) => {
+        if (name === '') {
+            setName("New Notebook");
+            setShowInput(false);
+            return
+        }
         e.preventDefault();
         const notebook = { name, user_id: currentUser.id }
         let newNotebook = await dispatch(postNotebook(notebook));
