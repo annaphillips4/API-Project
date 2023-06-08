@@ -52,7 +52,13 @@ function UserBar() {
             <i className="fa-solid fa-arrow-right-from-bracket" onClick={handleLogout}></i>
 
             <div className="search-bar" onBlur={(e) => hide(e)}>
-                <input onChange={(e) => setQuery(e.target.value)} onFocus={() => show()} className="search-input" type="text" placeholder="Search Notes..." ></input>
+                <input
+                    onChange={(e) => setQuery(e.target.value)}
+                    onFocus={() => show()}
+                    className="search-input"
+                    type="text"
+                    placeholder="Search Notes..."
+                ></input>
             </div>
 
             <div className="search-results hidden">

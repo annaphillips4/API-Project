@@ -52,7 +52,7 @@ function LandingPage() {
     return (
         <div className='landing'>
             <Link to='/'>
-                <h1>Inkling</h1>
+                <h1>inkling</h1>
                 <h3>a note app</h3>
                 <button className='log-buttons' onClick={logInDemo}>Demo Login</button><br />
             </Link>
