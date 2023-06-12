@@ -4,7 +4,7 @@ Inkling is a note-taking app for creating and organizing notes. Simple, distract
 
 Inkling uses Quill for rich-text editing.
 
-Live link: [inkling-guxp.onrender.com](inkling-guxp.onrender.com)
+Live link: [inkling-guxp.onrender.com](https://inkling-guxp.onrender.com/)
 
  * [Feature List](https://github.com/annaphillips4/Inkling/wiki#:~:text=Database%20Schema-,Feature%20List,-Frontend%20Routes)
  * [React Components](https://github.com/annaphillips4/Inkling/wiki/React-Components#:~:text=Frontend%20Routes-,React%20Components,-List%20of%20Components)
