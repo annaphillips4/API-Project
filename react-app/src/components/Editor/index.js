@@ -83,10 +83,11 @@ function Editor() {
     }, [editorContent]);
 
     const handleSaveNote = async () => {
-        // e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
+        if (noteContents != note.content) {
         const newNote = { id: note.id, content: noteContents, name: note.name, notebook_id: note.notebookId }
         await dispatch(putNote(newNote))
+        }
     };
 
     const handleDeleteNote = async (e, note) => {
