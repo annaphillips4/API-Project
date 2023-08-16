@@ -305,6 +305,9 @@ i {
     top: 10px;
     left: 440px;
     padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .dark-mode .note-bar {
@@ -383,4 +386,19 @@ i {
 
 .dark-mode .selected {
     background-color: rgb(30, 31, 32);
+}
+
+.me {
+    margin-left: auto;
+    padding: 5px 15px;
+    color: #333333;
+    cursor: pointer;
+    font-size: small;
+    border: 1px solid rgb(215, 216, 217);
+    background-color: rgb(245, 246, 247);
+}
+
+.left-container {
+    display: flex;
+    align-items: center;
 }

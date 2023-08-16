@@ -122,24 +122,55 @@ function Editor() {
         printWindow.print();
     };
 
+    const handleSelection = (selectedValue) => {
+        if (selectedValue === 'linkedin') {
+            window.location.href = 'https://www.linkedin.com/in/anna-phillips-software-engineer';
+        } else if (selectedValue === 'github') {
+            window.location.href = 'https://github.com/annaphillips4';
+        } else if (selectedValue === 'personal') {
+            window.location.href = 'https://annaphillips4.github.io/';
+        } else if (selectedValue === 'resume') {
+            window.location.href = 'https://annaphillips4.github.io/assets/Phillips_Anna_Resume.pdf';
+        }
+    }
+
     return (
         <>
             <div className='note-bar'>
-                <button onClick={(e) =>handleSaveNote(e)}>Save</button>
-                <button onClick={(e) => handleDeleteNote(e, note)}>Delete</button>
-                <select onChange={handleChangeNotebook} defaultValue={''}>
-                    <option value={''} disabled>
-                        Move to notebook...
+                <div className='left-container'>
+                    <button onClick={(e) => handleSaveNote(e)}>Save</button>
+                    <button onClick={(e) => handleDeleteNote(e, note)}>Delete</button>
+                    <select onChange={handleChangeNotebook} defaultValue={''}>
+                        <option value={''} disabled>
+                            Move to notebook...
+                        </option>
+                        {notebooksArr.map((notebook) => (
+                            notebook.id !== parseInt(notebookId) && (
+                                <option key={notebook.id} value={notebook.id}>
+                                    {notebook.name}
+                                </option>
+                            )
+                        ))}
+                    </select>
+                    <button onClick={() => handlePrint()}>Print</button>
+                </div>
+                <select className='me' defaultValue={'author'} onChange={(e) => handleSelection(e.target.value)}>
+                    <option value={'author'} disabled>
+                    &#169; Anna Phillips
                     </option>
-                    {notebooksArr.map((notebook) => (
-                        notebook.id !== parseInt(notebookId) && (
-                            <option key={notebook.id} value={notebook.id}>
-                                {notebook.name}
-                            </option>
-                        )
-                    ))}
+                    <option value={'linkedin'}>
+                        LinkedIn
+                    </option>
+                    <option value={'github'}>
+                        Github
+                    </option>
+                    <option value={'personal'}>
+                        Personal Site
+                    </option>
+                    <option value={'resume'}>
+                        Resume
+                    </option>
                 </select>
-                <button onClick={() => handlePrint()}>Print</button>
             </div>
             {rename ? (
                 <form onSubmit={handleRename}>
