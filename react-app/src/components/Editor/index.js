@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { deleteNote, getNotes, putNote } from '../../store/note';
@@ -51,8 +51,8 @@ function Editor() {
         });
 
         if (note) {
-            quill.root.innerHTML = note.content; // Set initial content from the note
-            setNewName(note.name)
+            quill.root.innerHTML = note?.content; // Set initial content from the note
+            setNewName(note?.name)
         }
 
         quill.focus();
@@ -72,6 +72,14 @@ function Editor() {
         };
     }, [note]);
 
+    const handleSaveNote = useCallback(async () => {
+        const noteContents = document.querySelector('.ql-editor').innerHTML;
+        if (noteContents !== note?.content) {
+            const newNote = { id: note?.id, content: noteContents, name: note?.name, notebook_id: note?.notebookId };
+            await dispatch(putNote(newNote));
+        }
+    }, [note, dispatch]);
+
     useEffect(() => {
         const autosaveTimer = setTimeout(() => {
             handleSaveNote();
@@ -80,15 +88,7 @@ function Editor() {
         return () => {
             clearTimeout(autosaveTimer);
         };
-    }, [editorContent]);
-
-    const handleSaveNote = async () => {
-        const noteContents = document.querySelector('.ql-editor').innerHTML
-        if (noteContents != note.content) {
-        const newNote = { id: note.id, content: noteContents, name: note.name, notebook_id: note.notebookId }
-        await dispatch(putNote(newNote))
-        }
-    };
+    }, [editorContent, handleSaveNote]);
 
     const handleDeleteNote = async (e, note) => {
         e.preventDefault()
@@ -100,7 +100,7 @@ function Editor() {
     const handleRename = async (e) => {
         e.preventDefault()
         const noteContents = document.querySelector('.ql-editor').innerHTML
-        const newNote = { id: note.id, name: newName, content: noteContents, notebook_id: note.notebookId }
+        const newNote = { id: note?.id, name: newName, content: noteContents, notebook_id: note?.notebookId }
         await dispatch(putNote(newNote))
         setRename(false)
     }
@@ -109,15 +109,15 @@ function Editor() {
         e.preventDefault()
         const selectedNotebookId = e.target.value;
         const noteContents = document.querySelector('.ql-editor').innerHTML
-        const newNote = { id: note.id, name: newName, content: noteContents, notebook_id: selectedNotebookId }
+        const newNote = { id: note?.id, name: newName, content: noteContents, notebook_id: selectedNotebookId }
         await dispatch(putNote(newNote))
         e.target.value = ''
-        history.push(`/app/notebook/${selectedNotebookId}/note/${note.id}`)
+        history.push(`/app/notebook/${selectedNotebookId}/note/${note?.id}`)
     };
 
     const handlePrint = () => {
         const printWindow = window.open("", "_blank");
-        printWindow.document.write(`<h1>${note.name}</h1>${note.content}`);
+        printWindow.document.write(`<h1>${note?.name}</h1>${note?.content}`);
         printWindow.document.close();
         printWindow.print();
     };
@@ -125,7 +125,7 @@ function Editor() {
     return (
         <>
             <div className='note-bar'>
-                <button onClick={handleSaveNote}>Save</button>
+                <button onClick={(e) =>handleSaveNote(e)}>Save</button>
                 <button onClick={(e) => handleDeleteNote(e, note)}>Delete</button>
                 <select onChange={handleChangeNotebook} defaultValue={''}>
                     <option value={''} disabled>
